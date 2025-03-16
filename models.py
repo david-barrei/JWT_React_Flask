@@ -3,16 +3,18 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column,relationship
 
+
+
 db = SQLAlchemy()
 
 class User(db.Model):
     __tablename__ = "user"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(nullable=False)
-    password: Mapped[str]= mapped_column()
+    email: Mapped[str] = mapped_column(nullable=False, unique=True)
+    password: Mapped[str]= mapped_column(nullable=False)
 
-    libro = db.relationship('book')
+    libro = db.relationship('Book', backref='user')
 
 
 class Book(db.Model):
@@ -23,8 +25,8 @@ class Book(db.Model):
     description:Mapped[str] = mapped_column()
     year: Mapped[int] = mapped_column()
     feedback: Mapped[str] = mapped_column()
-    user: Mapped[int] = mapped_column(primary_key=True)
-    
+    user_id: Mapped[int] = mapped_column(ForeignKey('user.id'))
+
 
 
 
