@@ -16,6 +16,14 @@ class User(db.Model):
 
     libro = db.relationship('Book', backref='user')
 
+    def serializer(self):
+        return{
+            "id":self.id,
+            "email":self.email,
+            "password":self.password
+            
+        }
+
 
 class Book(db.Model):
     __tablename__ = "book"
@@ -27,7 +35,15 @@ class Book(db.Model):
     feedback: Mapped[str] = mapped_column()
     user_id: Mapped[int] = mapped_column(ForeignKey('user.id'))
 
-
+    def serializer(self):
+        return{
+            "id":self.id,
+            "title":self.title,
+            "description":self.description,
+            "year":self.year,
+            "feedback":self.feedback,
+            "user_id":self.user_id
+        }
 
 
 
