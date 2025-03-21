@@ -63,6 +63,24 @@ def create_book():
         }
     ),200
 
+@app.route('/book',methods=['GET'])#ARREGLAR 
+@jwt_required(refresh=True)
+def create_book():
+    book = Book()
+    book.title = request.json.get('title')
+    book.description = request.json.get('description')
+    book.year = request.json.get('year')
+    book.feedback = request.json.get('feedback')
+    book.user_id = request.json.get('user_id')
+    db.session.add(book)
+    db.session.commit()
+
+
+    return jsonify(
+        {
+            "message":"libro guardado"
+        }
+    ),200
 
 if __name__=="__main__":
     app.run(host="localhost", port=5000, debug=True)
