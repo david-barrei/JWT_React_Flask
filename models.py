@@ -35,17 +35,17 @@ class Book(db.Model):
     feedback: Mapped[str] = mapped_column()
     user_id: Mapped[int] = mapped_column(ForeignKey('user.id'))
 
-    def serializer(self):
-        return{
-            "id":self.id,
-            "title":self.title,
-            "description":self.description,
-            "year":self.year,
-            "feedback":self.feedback,
-            "user_id":self.user_id
-        }
+  
 
+class Book(db.Model):
+    __tablename__ = "book"
 
+    id: Mapped[int] = mapped_column(primary_key=True)
+    title: Mapped[str] = mapped_column(nullable=False)
+    description:Mapped[str] = mapped_column()
+    year: Mapped[int] = mapped_column()
+    feedback: Mapped[str] = mapped_column()
+    user_id: Mapped[int] = mapped_column(ForeignKey('user.id'))
 
 
 
