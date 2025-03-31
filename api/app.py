@@ -2,13 +2,14 @@ from flask import Flask, request, jsonify
 from flask_migrate import Migrate
 from flask_jwt_extended import create_access_token, jwt_required,JWTManager
 from models import db,User,Book
-
+from flask_cors import CORS
 app = Flask(__name__)
 jwt = JWTManager(app)
 app.config['JWT_SECRET_KEY']= 'secret-key'
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///pokemon.db"
 
 Migrate(app,db)
+CORS(app)
 db.init_app(app) 
 
 
@@ -45,7 +46,7 @@ def create_user():
     ),200
 
 @app.route('/book',methods=['POST'])
-@jwt_required(refresh=True)
+@jwt_required()
 def create_book():
     book = Book()
     book.title = request.json.get('title')
@@ -63,24 +64,6 @@ def create_book():
         }
     ),200
 
-@app.route('/book',methods=['GET'])#ARREGLAR 
-@jwt_required(refresh=True)
-def create_book():
-    book = Book()
-    book.title = request.json.get('title')
-    book.description = request.json.get('description')
-    book.year = request.json.get('year')
-    book.feedback = request.json.get('feedback')
-    book.user_id = request.json.get('user_id')
-    db.session.add(book)
-    db.session.commit()
-
-
-    return jsonify(
-        {
-            "message":"libro guardado"
-        }
-    ),200
 
 if __name__=="__main__":
     app.run(host="localhost", port=5000, debug=True)
